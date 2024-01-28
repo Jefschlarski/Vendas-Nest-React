@@ -3,7 +3,7 @@ import { User } from './entities/user.entity';
 import { hash } from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class UserService {
@@ -27,5 +27,29 @@ export class UserService {
 
     async getAll(): Promise<User[]>{
         return this.userRepository.find();
+    }
+
+    async getUserRelations(userId: number): Promise<User>{
+        return this.userRepository.findOne({
+            where:{
+                id:userId
+            },
+            relations:['addresses']
+        })
+    }
+
+    async getById(userId: number): Promise<User>{
+
+        const user = await this.userRepository.findOne({
+            where:{
+                id:userId
+            }
+        })
+        
+        if(!user){
+            throw new NotFoundException(`userId ${userId} Not Found`)
+        }
+
+        return user;
     }
 }
