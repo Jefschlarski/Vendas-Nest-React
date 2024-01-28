@@ -34,9 +34,15 @@ export class UserService {
             where:{
                 id:userId
             },
-            relations:['addresses']
+            relations:{
+                addresses:{
+                    city:{
+                        state: true,
+                    }
+                }
+            }
         })
-    }
+    }   
 
     async getById(userId: number): Promise<User>{
 
