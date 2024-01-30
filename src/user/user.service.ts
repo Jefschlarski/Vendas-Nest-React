@@ -3,7 +3,7 @@ import { User } from './entities/user.entity';
 import { hash } from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class UserService {
@@ -14,6 +14,12 @@ export class UserService {
 
     async create(userDto: UserDto)
     {
+        const user = await this.getByEmail(userDto.email).catch(() => undefined)
+
+        if(user){
+            throw new BadRequestException('email já está em uso')
+        }
+
         const saltOrRounds = 10;
         const passwordHashed = await hash(userDto.password, saltOrRounds);  
 
