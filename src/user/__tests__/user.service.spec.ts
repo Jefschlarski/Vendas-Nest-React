@@ -7,7 +7,7 @@ import { userMock } from '../__mocks__/user_mock';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { userDtoMock } from '../__mocks__/user_dto_mock';
 
-describe('UsrService', () => {
+describe('UserService', () => {
   let service: UserService;
   let userRepository: Repository<User>;
   beforeEach(async () => {
