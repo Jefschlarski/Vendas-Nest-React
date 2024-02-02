@@ -7,6 +7,11 @@ export class StateController {
 
     constructor(private readonly stateService: StateService){}
 
+    /**
+     * Retrieve all states.
+     *
+     * @return {Promise<State[]>} The list of all states
+     */
     @Get()
     async getAll(): Promise<State[]> {
         return this.stateService.getAll();

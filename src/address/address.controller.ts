@@ -15,7 +15,14 @@ export class AddressController {
     constructor(
         private readonly addressService: AddressService,
     ){}
-
+    
+    /**
+     * Create a new address.
+     *
+     * @param {AddressDto} addressDto - the address data transfer object
+     * @param {number} userId - the user ID
+     * @return {Promise<Address>} the newly created address
+     */
     @Post()
     @UsePipes(ValidationPipe)
     async create(@Body() addressDto: AddressDto,  @UserId() userId: number,): Promise<Address>
@@ -23,7 +30,12 @@ export class AddressController {
         return this.addressService.create(addressDto, userId)
     }
 
-
+    /**
+     * Find all addresses by user ID.
+     *
+     * @param {number} userId - the user ID
+     * @return {Promise<ReturnAddressDto[]>} a promise that resolves to an array of ReturnAddressDto objects
+     */
     @Get()
     async findAllByUserId(@UserId() userId: number): Promise<ReturnAddressDto[]>{
         return (await this.addressService.findAllByUserId(userId)).map((address) => new ReturnAddressDto(address));

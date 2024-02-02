@@ -10,7 +10,12 @@ export class StateService {
         @InjectRepository(State)
         private readonly stateRepository: Repository<State>
     ){};
-
+    
+    /**
+     * Retrieve all states.
+     *
+     * @return {Promise<State[]>} The array of states
+     */
     async getAll(): Promise<State[]>{
         return this.stateRepository.find()
     }

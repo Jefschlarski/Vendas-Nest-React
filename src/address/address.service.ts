@@ -15,7 +15,14 @@ export class AddressService {
         private readonly userService: UserService,
         private readonly cityService: CityService,
     ){}
-    
+
+    /**
+     * Create a new address for a user.
+     *
+     * @param {AddressDto} addressDto - the address data transfer object
+     * @param {number} userId - the user ID
+     * @return {Promise<Address>} the newly created address
+     */
     async create(addressDto: AddressDto, userId: number): Promise<Address>
     {
       await this.userService.getById(userId)
@@ -26,6 +33,12 @@ export class AddressService {
       })
     }
 
+    /**
+     * Find all addresses by user ID.
+     *
+     * @param {number} userId - The user ID
+     * @return {Promise<Address[]>} The list of addresses
+     */
     async findAllByUserId(userId: number): Promise<Address[]>{
         
       const addresses = await this.addressRepository.find({

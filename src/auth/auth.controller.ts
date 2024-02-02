@@ -9,7 +9,13 @@ export class AuthController {
     constructor(
         private readonly authService: AuthService
     ){}
-
+    
+    /**
+     * Perform a login using the provided login data.
+     *
+     * @param {LoginDto} loginDto - the login data
+     * @return {Promise<ReturnLoginDto>} the login result
+     */
     @UsePipes(ValidationPipe)
     @Post()
     async login(@Body() loginDto: LoginDto): Promise<ReturnLoginDto>{

@@ -1,5 +1,11 @@
 import { LoginPayloadDto } from "src/auth/dto/loginPayload.dto"
 
+/**
+ * Generates a LoginPayloadDto from the provided authorization string.
+ *
+ * @param {string} authorization - The authorization string
+ * @return {LoginPayloadDto | undefined} The parsed LoginPayloadDto, or undefined if the authorization is invalid
+ */
 export const authorizationToLoginPayload = (authorization: string): LoginPayloadDto | undefined => {
     const authorizationSplited = authorization.split('.');
 

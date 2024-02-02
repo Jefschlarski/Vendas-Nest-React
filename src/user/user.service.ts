@@ -7,12 +7,19 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 
 @Injectable()
 export class UserService {
+
    constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>
    ){};
 
-    async create(userDto: UserDto)
+    /**
+     * Create a new user with the provided user data.
+     *
+     * @param {UserDto} userDto - the user data to create the user with
+     * @return {Promise<User>} a promise that resolves to the newly created user
+     */
+    async create(userDto: UserDto): Promise<User>
     {
         const user = await this.getByEmail(userDto.email).catch(() => undefined)
 
@@ -31,10 +38,21 @@ export class UserService {
             })
     }
 
+    /**
+     * Retrieve all users from the repository.
+     *
+     * @return {Promise<User[]>} The list of all users
+     */
     async getAll(): Promise<User[]>{
         return this.userRepository.find();
     }
 
+    /**
+     * Async function to get user relations by user id.
+     *
+     * @param {number} userId - The user ID
+     * @return {Promise<User>} The user with relations
+     */
     async getUserRelations(userId: number): Promise<User>{
         return this.userRepository.findOne({
             where:{
@@ -48,8 +66,14 @@ export class UserService {
                 }
             }
         })
-    }   
+    }  
 
+    /**
+     * Retrieves a user by their ID.
+     *
+     * @param {number} userId - the ID of the user to retrieve
+     * @return {Promise<User>} the user with the specified ID
+     */
     async getById(userId: number): Promise<User>{
 
         const user = await this.userRepository.findOne({
@@ -65,6 +89,12 @@ export class UserService {
         return user;
     }
 
+    /**
+     * Retrieves a user by their email address.
+     *
+     * @param {string} email - The email address of the user
+     * @return {Promise<User>} The user object
+     */
     async getByEmail(email: string): Promise<User>{
 
         const user = await this.userRepository.findOne({
