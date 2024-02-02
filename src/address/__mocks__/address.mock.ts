@@ -4,7 +4,7 @@ import { cityMock } from "../../city/__mocks__/city.mock";
 
 export const addressMock: Address = {
     createdAt: new Date(),
-    id: 421314,
+    id: 1,
     updatedAt: new Date(),
     userId: userMock.id,
     cep: '1234512315',

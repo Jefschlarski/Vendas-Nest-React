@@ -10,6 +10,7 @@ import { userMock } from '../../user/__mocks__/user_mock';
 import { CityService } from '../../city/city.service';
 import { cityMock } from '../../city/__mocks__/city.mock';
 import { addressDtoMock } from '../__mocks__/address_dto.mock';
+import { NotFoundException } from '@nestjs/common';
 
 describe('AddressService', () => {
   let service: AddressService;
@@ -38,12 +39,14 @@ describe('AddressService', () => {
             getCache: jest.fn().mockResolvedValue([addressMock]),
           },
         },
-      {
-        provide:getRepositoryToken(Address),
-        useValue: {
-          save: jest.fn().mockResolvedValue(addressMock),
-        }
-      }],
+        {
+          provide:getRepositoryToken(Address),
+          useValue: {
+            save: jest.fn().mockResolvedValue(addressMock),
+            find: jest.fn().mockResolvedValue([addressMock]),
+          }
+        },
+      ],
     }).compile();
 
     
@@ -77,5 +80,15 @@ describe('AddressService', () => {
     jest.spyOn(cityService, 'getById').mockRejectedValueOnce(new Error());
 
     expect(service.create(addressMock, userMock.id)).rejects.toThrow(Error);
+  })
+
+  it('should return all address in findAllByUserId', async () => {
+    const addresses = await service.findAllByUserId(userMock.id);
+    expect(addresses).toEqual([addressMock]);
+  })
+
+  it('should return notfound in findAllByUserId', async () => {
+    jest.spyOn(addressRepository, 'find').mockResolvedValueOnce(undefined);
+    expect(service.findAllByUserId(userMock.id)).rejects.toThrow(NotFoundException);
   })
 });
