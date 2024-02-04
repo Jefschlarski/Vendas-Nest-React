@@ -4,7 +4,11 @@ import { Repository } from 'typeorm';
 import { Category } from '../entities/category.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { categoryMock } from '../__mocks__/category.mock';
+<<<<<<< HEAD
+import { ConflictException, NotFoundException } from '@nestjs/common';
+=======
 import { NotFoundException } from '@nestjs/common';
+>>>>>>> develop
 import { createCategoryDtoMock } from '../__mocks__/createCategory.mock';
 
 describe('CategoryService', () => {
@@ -37,6 +41,19 @@ describe('CategoryService', () => {
     expect(categoryRepository).toBeDefined();
   });
 
+<<<<<<< HEAD
+  it('should return category in findById', async () => {
+    const category = await service.findById(categoryMock.id);
+    expect(category).toEqual(categoryMock);
+  })
+
+  it('should throw NotFoundException if findById return empty', async () => {
+    jest.spyOn(categoryRepository, 'findOne').mockResolvedValue(null);
+    expect(service.findById(categoryMock.id)).rejects.toThrow(NotFoundException);
+  })
+
+=======
+>>>>>>> develop
   it('should return category in findByName', async () => {
     const category = await service.findByName(categoryMock.name);
     expect(category).toEqual(categoryMock);
@@ -65,6 +82,10 @@ describe('CategoryService', () => {
 
 
   it('should return category in create', async () => {
+<<<<<<< HEAD
+    jest.spyOn(categoryRepository, 'findOne').mockResolvedValue(undefined);
+=======
+>>>>>>> develop
     const category = await service.create(createCategoryDtoMock);
     expect(category).toEqual(categoryMock);
   })
@@ -74,4 +95,12 @@ describe('CategoryService', () => {
     expect(service.create(createCategoryDtoMock)).rejects.toThrow(Error);
   })
 
+<<<<<<< HEAD
+  it('should throw ConflictException in create if category already exists', async () => {
+    jest.spyOn(categoryRepository, 'findOne').mockResolvedValue(categoryMock);
+    expect(service.create(createCategoryDtoMock)).rejects.toThrow(ConflictException);  
+  })
+
+=======
+>>>>>>> develop
 });
