@@ -3,7 +3,11 @@ import { LoginDto } from './dto/login.dto';
 import { User } from '../user/entities/user.entity';
 import { UserService } from '../user/user.service';
 import { compare } from 'bcrypt';
+<<<<<<< HEAD
+import { ReturnUserDto } from '../user/dto/return.user.dto';
+=======
 import { ReturnUserDto } from '../user/dto/returnUser.dto';
+>>>>>>> develop
 import { JwtService } from '@nestjs/jwt';
 import { LoginPayloadDto } from './dto/loginPayload.dto';
 import { ReturnLoginDto } from './dto/returnLogin.dto';

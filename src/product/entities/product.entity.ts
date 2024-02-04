@@ -10,7 +10,11 @@ export class Product {
     name: string;
     
     @Column({name: 'category_id', nullable: false})
+<<<<<<< HEAD
+    categoryId: number;
+=======
     ProductId: number;
+>>>>>>> develop
 
     @Column({name: 'price', nullable: false})
     price: number;

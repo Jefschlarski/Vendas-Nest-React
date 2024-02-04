@@ -9,7 +9,11 @@ import { UserService } from '../../user/user.service';
 import { userMock } from '../../user/__mocks__/user_mock';
 import { CityService } from '../../city/city.service';
 import { cityMock } from '../../city/__mocks__/city.mock';
+<<<<<<< HEAD
+import { addressDtoMock } from '../__mocks__/address.dto.mock';
+=======
 import { addressDtoMock } from '../__mocks__/address_dto.mock';
+>>>>>>> develop
 import { NotFoundException } from '@nestjs/common';
 
 describe('AddressService', () => {
