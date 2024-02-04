@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { hash } from 'bcrypt';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { UserDto } from './dto/user.dto';
+=======
+import { UserDto } from './dto/user.dto';
+import { User } from './entities/user.entity';
+import { hash } from 'bcrypt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+>>>>>>> develop
 import { UserType } from './enum/user-type.enum';
 
 @Injectable()

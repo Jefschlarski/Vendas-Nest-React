@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+<<<<<<< HEAD
 import { ProductService } from './product.service';
 import { ProductController } from './product.controller';
 import { Product } from './entities/product.entity';
@@ -10,4 +11,8 @@ import { CategoryModule } from 'src/category/category.module';
   providers: [ProductService],
   controllers: [ProductController]
 })
+=======
+
+@Module({})
+>>>>>>> develop
 export class ProductModule {}

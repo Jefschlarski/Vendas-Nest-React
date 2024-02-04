@@ -5,7 +5,11 @@ import { AuthService } from '../auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { jwtMock } from '../__mocks__/jwt.mock';
 import { loginDtoMock } from '../__mocks__/login_dto.mock';
+<<<<<<< HEAD
 import { ReturnUserDto } from '../../user/dto/return.user.dto';
+=======
+import { ReturnUserDto } from '../../user/dto/returnUser.dto';
+>>>>>>> develop
 
 describe('AuthService', () => {
   let service: AuthService;

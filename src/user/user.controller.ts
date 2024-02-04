@@ -1,7 +1,11 @@
 import { Body, Controller, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { UserDto } from './dto/user.dto';
 import { UserService } from './user.service';
+<<<<<<< HEAD
 import { ReturnUserDto } from './dto/return.user.dto';
+=======
+import { ReturnUserDto } from './dto/returnUser.dto';
+>>>>>>> develop
 
 @Controller('user')
 export class UserController {

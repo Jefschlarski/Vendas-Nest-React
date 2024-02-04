@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { AddressModule } from './address/address.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
@@ -12,6 +13,22 @@ import { RolesGuard } from './guards/roles.guard';
 import { StateModule } from './state/state.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
+=======
+import { Module } from '@nestjs/common';
+import { UserModule } from './user/user.module';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { StateModule } from './state/state.module';
+import { CityModule } from './city/city.module';
+import { AddressModule } from './address/address.module';
+import { CacheModule } from './cache/cache.module';
+import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './guards/roles.guard';
+import { JwtModule } from '@nestjs/jwt';
+import { CategoryModule } from './category/category.module';
+import { ProductModule } from './product/product.module';
+>>>>>>> develop
 
 @Module({
   imports: 
