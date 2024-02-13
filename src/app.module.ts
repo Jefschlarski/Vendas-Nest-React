@@ -12,6 +12,8 @@ import { RolesGuard } from './guards/roles.guard';
 import { StateModule } from './state/state.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
+import { CartModule } from './cart/cart.module';
+import { CartProductModule } from './cart-product/cart-product.module';
 
 @Module({
   imports: 
@@ -41,6 +43,8 @@ import { UserModule } from './user/user.module';
     JwtModule,
     CategoryModule,
     ProductModule,
+    CartModule,
+    CartProductModule,
   ],
   controllers: [],
   providers: [
