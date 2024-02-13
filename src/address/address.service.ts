@@ -25,7 +25,7 @@ export class AddressService {
      */
     async create(addressDto: AddressDto, userId: number): Promise<Address>
     {
-      await this.userService.getById(userId)
+      await this.userService.findById(userId)
       await this.cityService.getById(addressDto.cityId)
       return this.addressRepository.save({
         ...addressDto,

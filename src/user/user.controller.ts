@@ -1,11 +1,10 @@
-import { Body, Controller, Get, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { UserDto } from './dto/user.dto';
 import { UserService } from './user.service';
-<<<<<<< HEAD
 import { ReturnUserDto } from './dto/return.user.dto';
-=======
-import { ReturnUserDto } from './dto/returnUser.dto';
->>>>>>> develop
+import { UpdatePasswordDto } from './dto/update.password';
+import { User } from './entities/user.entity';
+import { UserId } from 'src/decorators/user-id.decorator';
 
 @Controller('user')
 export class UserController {
@@ -32,7 +31,7 @@ export class UserController {
      */
     @Get()
     async getAll(): Promise<ReturnUserDto[]> {
-        return (await this.userService.getAll()).map((user) => new ReturnUserDto(user));
+        return (await this.userService.findAll()).map((user) => new ReturnUserDto(user));
     }
 
     /**
@@ -45,5 +44,19 @@ export class UserController {
     async getUserRelations(@Param('userId') userId: number): Promise<ReturnUserDto>{
         return new ReturnUserDto(await this.userService.getUserRelations(userId));
     }
+
+    /**
+     * A description of the entire function.
+     *
+     * @param {number} userId - description of parameter
+     * @param {UpdatePasswordDto} updatePasswordDto - description of parameter
+     * @return {Promise<User>} description of return value
+     */
+    @Patch()
+    @UsePipes(ValidationPipe)
+    async updatePassword(@UserId() userId: number, @Body() updatePasswordDto: UpdatePasswordDto): Promise<User>{
+        return await this.userService.updatePassword(userId, updatePasswordDto);
+    }
 }
+
     

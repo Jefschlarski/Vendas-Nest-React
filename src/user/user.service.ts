@@ -1,28 +1,22 @@
-<<<<<<< HEAD
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { hash } from 'bcrypt';
-import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
-import { UserDto } from './dto/user.dto';
-=======
 import { UserDto } from './dto/user.dto';
 import { User } from './entities/user.entity';
 import { hash } from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
->>>>>>> develop
 import { UserType } from './enum/user-type.enum';
+import { PersistenceContract } from '../interfaces/persistence.contract';
+import { UpdatePasswordDto } from './dto/update.password';
+import { validatePassword } from '../utils/autenticate';
 
 @Injectable()
-export class UserService {
+export class UserService implements PersistenceContract<User> {
 
    constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>
-   ){};
-
+   ){}
+   
     /**
      * Create a new user with the provided user data.
      *
@@ -31,7 +25,7 @@ export class UserService {
      */
     async create(userDto: UserDto): Promise<User>
     {
-        const user = await this.getByEmail(userDto.email).catch(() => undefined)
+        const user = await this.findByEmail(userDto.email).catch(() => undefined)
 
         if(user){
             throw new BadRequestException('email já está em uso')
@@ -53,7 +47,7 @@ export class UserService {
      *
      * @return {Promise<User[]>} The list of all users
      */
-    async getAll(): Promise<User[]>{
+    async findAll(): Promise<User[]>{
         return this.userRepository.find();
     }
 
@@ -84,7 +78,7 @@ export class UserService {
      * @param {number} userId - the ID of the user to retrieve
      * @return {Promise<User>} the user with the specified ID
      */
-    async getById(userId: number): Promise<User>{
+    async findById(userId: number): Promise<User>{
 
         const user = await this.userRepository.findOne({
             where:{
@@ -105,7 +99,7 @@ export class UserService {
      * @param {string} email - The email address of the user
      * @return {Promise<User>} The user object
      */
-    async getByEmail(email: string): Promise<User>{
+    async findByEmail(email: string): Promise<User>{
 
         const user = await this.userRepository.findOne({
             where:{
@@ -119,4 +113,30 @@ export class UserService {
 
         return user;
     }
+    
+    async updatePassword(id: number, updatePasswordDto: UpdatePasswordDto): Promise<User> {
+        const user = await this.findById(id);
+        const passwordHashed = await hash(updatePasswordDto.newPassword, 10);
+        const isMatch = await validatePassword(updatePasswordDto.oldPassword, user.password || '');
+        const isSame = await validatePassword(updatePasswordDto.newPassword, user.password || '');
+
+        if(isSame){
+            throw new BadRequestException('new password is the same as old password');
+           
+        }
+
+        if(!isMatch){
+            throw new BadRequestException('Password invalid');
+        }
+
+        return this.userRepository.save({...user, password: passwordHashed});   
+    }
+
+    update(id: number, item: User): Promise<User> {
+        throw new Error('Method not implemented.');
+    }
+    delete(id: number): Promise<boolean> {
+        throw new Error('Method not implemented.');
+    }
+
 }

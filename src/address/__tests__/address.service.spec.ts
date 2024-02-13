@@ -9,11 +9,7 @@ import { UserService } from '../../user/user.service';
 import { userMock } from '../../user/__mocks__/user_mock';
 import { CityService } from '../../city/city.service';
 import { cityMock } from '../../city/__mocks__/city.mock';
-<<<<<<< HEAD
 import { addressDtoMock } from '../__mocks__/address.dto.mock';
-=======
-import { addressDtoMock } from '../__mocks__/address_dto.mock';
->>>>>>> develop
 import { NotFoundException } from '@nestjs/common';
 
 describe('AddressService', () => {
@@ -28,7 +24,7 @@ describe('AddressService', () => {
         {
           provide: UserService,
           useValue:{
-            getById: jest.fn().mockResolvedValue(userMock),
+            findById: jest.fn().mockResolvedValue(userMock),
           },
         },
         {
@@ -75,7 +71,7 @@ describe('AddressService', () => {
   })
 
   it('should return error if exception in userService', async () => {
-    jest.spyOn(userService, 'getById').mockRejectedValueOnce(new Error());
+    jest.spyOn(userService, 'findById').mockRejectedValueOnce(new Error());
 
     expect(service.create(addressMock, userMock.id)).rejects.toThrow(Error);
   })
