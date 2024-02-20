@@ -1,4 +1,4 @@
-import { CartProduct } from "src/cart-product/entities/cart-product.entity";
+import { CartProduct } from "../../cart-product/entities/cart-product.entity";
 import { Category } from "../../category/entities/category.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
 

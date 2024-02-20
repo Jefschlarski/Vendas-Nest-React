@@ -2,9 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Cart } from './entities/cart.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PersistenceContract } from 'src/interfaces/persistence.contract';
 import { CartDto } from './dto/cart.dto';
-import { CartProductService } from 'src/cart-product/cart-product.service';
+import { CartProductService } from '../cart-product/cart-product.service';
 
 @Injectable()
 export class CartService {
@@ -32,13 +31,13 @@ export class CartService {
      * @return {Promise<Cart>} the updated cart after adding the product
      */   
     async addProductToCart(cartDto: CartDto, userId: number): Promise<Cart> {
-        const cart = await this.verifyActiveCart(userId).catch(() => {
+        const cart = await this.findByUserId(userId).catch(() => {
             return this.create(userId);
         })
 
         await this.cartProductService.insert(cart, cartDto);
 
-        return cart;
+        return this.findByUserId(userId, true);
     }
 
     /**
@@ -46,8 +45,8 @@ export class CartService {
      *
      * @return {Promise<Cart[]>} The promise of an array of carts.
      */
-    findAll(): Promise<Cart[]> {
-        return this.cartRepository.find();
+    async findAll(): Promise<Cart[]> {
+        return await this.cartRepository.find();
     }
 
     /**
@@ -56,23 +55,16 @@ export class CartService {
      * @param {number} userId - The user ID to verify the active cart for
      * @return {Promise<Cart>} The active cart for the user
      */
-    async verifyActiveCart(userId: number): Promise<Cart> {
-        const cart = await this.findByUserId(userId);
+    async findByUserId(userId: number, hasRelations?: boolean): Promise<Cart> {
+
+        const relations = hasRelations ? {cartProducts: {product: true},} : undefined;
+
+        const cart = await this.cartRepository.findOne({where: {userId, active: true}, relations});
 
         if(!cart){
             throw new NotFoundException('Active cart not found');
         }
         return cart;
-    }
-    
-    /**
-     * Find a cart by user ID.
-     *
-     * @param {number} userId - the user ID
-     * @return {Promise<Cart>} the promise of finding a cart
-     */
-    async findByUserId(userId: number): Promise<Cart> {
-        return await this.cartRepository.findOne({where: {userId}});
     }
 
     /**
