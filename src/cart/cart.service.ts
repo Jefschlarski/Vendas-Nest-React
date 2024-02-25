@@ -31,13 +31,14 @@ export class CartService {
      * @return {Promise<Cart>} the updated cart after adding the product
      */   
     async addProductToCart(cartDto: CartDto, userId: number): Promise<Cart> {
+        
         const cart = await this.findByUserId(userId).catch(() => {
             return this.create(userId);
         })
 
         await this.cartProductService.insert(cart, cartDto);
 
-        return this.findByUserId(userId, true);
+        return this.findByUserId(userId);
     }
 
     /**
@@ -75,5 +76,11 @@ export class CartService {
      */
     async findById(id: number): Promise<Cart> {
         return await this.cartRepository.findOne({where: {id}}); 
+    }
+
+    async cleanCart(userId: number): Promise<Cart> {
+        const cart = await this.findByUserId(userId);
+        cart.cartProducts = [];
+        return await this.cartRepository.save(cart);
     }
 }

@@ -8,7 +8,6 @@ import { ConflictException, NotFoundException } from '@nestjs/common';
 import { CategoryService } from '../../category/category.service';
 import { categoryMock } from '../../category/__mocks__/category.mock';
 import { updateProductDtoMock } from '../__mocks__/update.product.dto.mock';
-import { returnProductDtoMock } from '../__mocks__/return.product.dto.mock';
 
 describe('ProductService', () => {
   let service: ProductService;

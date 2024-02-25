@@ -13,8 +13,8 @@ export class CartController {
 
     @Post()
     @UsePipes(ValidationPipe)
-    async addProductToCart(@Body() cartDto: CartDto, @UserId() userId: number): Promise<ReturnCartDto>{
-        return new ReturnCartDto(await this.cartService.addProductToCart(cartDto, userId));
+    async addProductToCart(@Body() cartDto: CartDto, @UserId() userId: number): Promise<Cart>{
+        return await this.cartService.addProductToCart(cartDto, userId);
     }
     
     @Get()
@@ -22,5 +22,5 @@ export class CartController {
     async getCart(@UserId() userId: number): Promise<ReturnCartDto>{
         
         return new ReturnCartDto(await this.cartService.findByUserId(userId, true));
-    }
+    } 
 }

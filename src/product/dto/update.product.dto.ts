@@ -1,6 +1,8 @@
 import { IsInt, IsString } from "class-validator";
 
 export class UpdateProductDto{
+    @IsInt()
+    id: number;
     @IsString()
     name: string;
     @IsInt()
