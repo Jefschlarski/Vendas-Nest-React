@@ -36,4 +36,16 @@ export abstract class Payment{
     @ManyToOne(() => PaymentStatus, (paymentStatus) => paymentStatus.payments)
     @JoinColumn({name: 'status_id', referencedColumnName: 'id'})
     status?: PaymentStatus;
+
+    constructor(
+        statusId: number,
+        price: number,
+        discount: number,
+        finalPrice: number,
+    ){
+        this.statusId = statusId;
+        this.price = price;
+        this.discount = discount;
+        this.finalPrice = finalPrice;
+    }
 }
