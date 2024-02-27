@@ -1,6 +1,5 @@
-import { IsNumber } from "class-validator"
-import { ReturnCartDto } from "src/cart/dto/return-cart.dto";
-import { ReturnProductDto } from "src/product/dto/return.product.dto";
+import { ReturnCartDto } from "../../cart/dto/return-cart.dto";
+import { ReturnProductDto } from "../../product/dto/return.product.dto";
 import { CartProduct } from "../entities/cart-product.entity";
 
 export class ReturnCartProductDto {

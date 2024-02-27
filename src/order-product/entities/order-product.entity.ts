@@ -1,13 +1,15 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Order } from "../../order/entities/order.entity";
+import { Product } from "../../product/entities/product.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({name: 'order_product'})
-export abstract class Payment{
+export class OrderProduct{
 
     @PrimaryGeneratedColumn('rowid')
     id: number;
 
-    @Column({name: 'user_id', nullable: false})
-    userId: number;
+    @Column({name: 'order_id', nullable: false})
+    orderId: number;
 
     @Column({name: 'product_id', nullable: false})
     productId: number;
@@ -23,4 +25,12 @@ export abstract class Payment{
 
     @UpdateDateColumn({name: 'updated_at'})
     updatedAt:Date;
+
+    @ManyToMany(() => Order, (order) => order.orderProducts)
+    @JoinColumn({name: 'order_id', referencedColumnName: 'id'})
+    order?: Order;
+
+    @ManyToMany(() => Product, (product) => product.orderProducts)
+    @JoinColumn({name: 'product_id', referencedColumnName: 'id'})
+    product?: Product;
 }

@@ -1,4 +1,4 @@
-import { LoginPayloadDto } from "src/auth/dto/loginPayload.dto"
+import { LoginPayloadDto } from "../auth/dto/loginPayload.dto"
 
 /**
  * Generates a LoginPayloadDto from the provided authorization string.

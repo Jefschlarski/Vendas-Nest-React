@@ -27,6 +27,7 @@ describe('CartService', () => {
             save: jest.fn().mockResolvedValue(cartMock),
             delete: jest.fn().mockResolvedValue({affected: 1}),
             find: jest.fn().mockResolvedValue([cartMock]),
+            update: jest.fn().mockResolvedValue({affected: 1}),
           },  
         },
       ],
@@ -70,8 +71,8 @@ describe('CartService', () => {
     expect(cart).toEqual(cartMock);
   })
 
-  it('should return Cart in cleanCart', async () => {
-    const cart = await service.cleanCart(cartMock.userId);
-    expect(cart).toEqual(cartMock);
+  it('should return UpdateResult in cleanCart', async () => {
+    const updateResult = await service.cleanCart(cartMock.userId);
+    expect(updateResult).toEqual({affected: 1});
   })
 });

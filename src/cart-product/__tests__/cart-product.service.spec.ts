@@ -8,7 +8,7 @@ import { ProductService } from '../../product/product.service';
 import { cartMock } from '../../cart/__mocks__/cart_mock';
 import { NotFoundException } from '@nestjs/common';
 import { updateProductDtoMock } from '../../product/__mocks__/update.product.dto.mock';
-import { CartDto } from 'src/cart/dto/cart.dto';
+import { CartDto } from '../../cart/dto/cart.dto';
 
 export const cartDtoMock: CartDto = {
   productId: 1,
@@ -22,8 +22,8 @@ export const cartProductMock = {
   amount: 1,
 }
 
-export const updateCartProductDtoMock = {
-  id: 1,
+export const updateCartProductDtoMock: CartDto= {
+  productId: 1,
   amount: 1
 }
 
@@ -56,6 +56,7 @@ describe('CartProductService', () => {
             save: jest.fn().mockResolvedValue(cartProductMock),
             delete: jest.fn().mockResolvedValue({affected: 1}),
             put: jest.fn().mockResolvedValue(updateCartProductDtoMock),
+            update: jest.fn().mockResolvedValue({affected: 1}),
           },
         }
       ],
@@ -98,23 +99,22 @@ describe('CartProductService', () => {
   })
 
   it('should return DeleteResult in delete', async () => {
-    const deleteResult = await service.delete(cartProductMock.cartId, cartProductMock.id);
+    const deleteResult = await service.delete(cartProductMock.cartId, cartProductMock);
     expect(deleteResult).toEqual({affected: 1});
   })
   
   it('should throw NotFoundException in delete if product not found', async () => {
     jest.spyOn(cartProductRepository, 'findOne').mockResolvedValue(undefined);
-    expect(service.delete(cartProductMock.cartId, cartProductMock.id)).rejects.toThrow(NotFoundException);
+    expect(service.delete(cartProductMock.cartId, cartProductMock)).rejects.toThrow(NotFoundException);
   })
 
-  it('should return product in update', async () => {
-    const productUpdate = await service.update(cartProductMock.cartId, updateProductDtoMock);
-    expect(productUpdate).toEqual(cartProductMock); 
+  it('should return UpdateResult in update', async () => {
+    const updateResult = await service.update(cartProductMock.cartId, updateCartProductDtoMock);
+    expect(updateResult).toEqual({affected: 1});
   })
 
   it('should throw NotFoundException in update if product not found', async () => {
     jest.spyOn(cartProductRepository, 'findOne').mockResolvedValue(undefined);
-    expect(service.update(cartProductMock.cartId, updateProductDtoMock)).rejects.toThrow(NotFoundException);
+    expect(service.update(cartProductMock.cartId, updateCartProductDtoMock)).rejects.toThrow(NotFoundException);
   })
-
 });

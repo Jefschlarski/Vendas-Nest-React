@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { Cart } from './entities/cart.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartDto } from './dto/cart.dto';
 import { CartProductService } from '../cart-product/cart-product.service';
+import { UpdateProductDto } from 'src/product/dto/update.product.dto';
 
 @Injectable()
 export class CartService {
@@ -21,6 +22,23 @@ export class CartService {
      */
     async create(userId: number): Promise<Cart> {
         return await this.cartRepository.save({userId, active: true});
+    }
+
+    /**
+     * updates the product in the cart or delete when the amount is 0.
+     *
+     * @param {CartDto} cartDto - the cart data transfer object
+     * @param {number} userId - the user ID
+     * @return {Promise<UpdateResult | DeleteResult>} the update or delete result promise
+     */
+    async updateProductCart(cartDto: CartDto, userId: number): Promise<UpdateResult | DeleteResult> {
+        const cart = await this.findByUserId(userId);
+
+        if(cartDto.amount <= 0){
+            return await this.cartProductService.delete(cart.id, cartDto); 
+        }
+
+        return await this.cartProductService.update(cart.id, cartDto);;
     }
 
     /**
@@ -78,9 +96,7 @@ export class CartService {
         return await this.cartRepository.findOne({where: {id}}); 
     }
 
-    async cleanCart(userId: number): Promise<Cart> {
-        const cart = await this.findByUserId(userId);
-        cart.cartProducts = [];
-        return await this.cartRepository.save(cart);
+    async cleanCart(userId: number): Promise<UpdateResult> {
+        return await this.cartRepository.update({userId, active: true}, {active: false});
     }
 }

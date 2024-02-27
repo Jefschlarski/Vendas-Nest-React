@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Category } from './entities/category.entity';
 import { CreateCategoryDto } from './dto/createCategory.dto';
-import { PersistenceContract } from 'src/interfaces/persistence.contract';
+import { PersistenceContract } from '../interfaces/persistence.contract';
 
 @Injectable()
 export class CategoryService implements PersistenceContract<Category> {

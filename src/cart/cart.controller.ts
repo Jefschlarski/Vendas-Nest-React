@@ -1,11 +1,13 @@
-import { Body, Controller, Get, Post, UsePipes, ValidationPipe } from '@nestjs/common';
-import { Roles } from 'src/decorators/roles.decorator';
-import { UserType } from 'src/user/enum/user-type.enum';
+import { Body, Controller, Get, Post, Put, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Roles } from '../decorators/roles.decorator';
+import { UserType } from '../user/enum/user-type.enum';
 import { CartService } from './cart.service';
-import { UserId } from 'src/decorators/user-id.decorator';
+import { UserId } from '../decorators/user-id.decorator';
 import { CartDto } from './dto/cart.dto';
 import { Cart } from './entities/cart.entity';
 import { ReturnCartDto } from './dto/return-cart.dto';
+import { DeleteResult, UpdateResult } from 'typeorm';
+import { UpdateProductDto } from 'src/product/dto/update.product.dto';
 @Roles(UserType.User)
 @Controller('cart')
 export class CartController {
@@ -23,4 +25,17 @@ export class CartController {
         
         return new ReturnCartDto(await this.cartService.findByUserId(userId, true));
     } 
+
+    @Put('clean')
+    @UsePipes(ValidationPipe)
+    async cleanCart(@UserId() userId: number): Promise<UpdateResult>{
+        return await this.cartService.cleanCart(userId);
+    }
+
+    @Put()
+    @UsePipes(ValidationPipe)
+    async updateCart(@Body() cartDto: CartDto, @UserId() userId: number): Promise<UpdateResult | DeleteResult>{
+        return await this.cartService.updateProductCart(cartDto, userId);
+    }
+
 }

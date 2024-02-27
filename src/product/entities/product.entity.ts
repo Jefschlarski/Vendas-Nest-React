@@ -1,3 +1,4 @@
+import { OrderProduct } from "../../order-product/entities/order-product.entity";
 import { CartProduct } from "../../cart-product/entities/cart-product.entity";
 import { Category } from "../../category/entities/category.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
@@ -31,4 +32,7 @@ export class Product {
 
     @OneToMany(() => CartProduct, (cartProduct: CartProduct)=> cartProduct.product)
     cartProduct?: CartProduct[]
+
+    @OneToMany(() => OrderProduct, (orderProduct: OrderProduct)=> orderProduct.product)
+    orderProducts?: OrderProduct[];
 }

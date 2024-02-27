@@ -2,9 +2,9 @@ import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { DeleteResult } from 'typeorm';
 import { Product } from './entities/product.entity';
 import { ProductService } from './product.service';
-import { Roles } from 'src/decorators/roles.decorator';
+import { Roles } from '../decorators/roles.decorator';
 import { ReturnProductDto } from './dto/return.product.dto';
-import { UserType } from 'src/user/enum/user-type.enum';
+import { UserType } from '../user/enum/user-type.enum';
 import { UpdateProductDto } from './dto/update.product.dto';
 
 @Roles(UserType.Admin, UserType.User)

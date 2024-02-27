@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartProduct } from './entities/cart-product.entity';
-import { DeleteResult, Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { CartDto } from '../cart/dto/cart.dto';
 import { Cart } from '../cart/entities/cart.entity';
 import { ProductService } from '../product/product.service';
-import { UpdateProductDto } from 'src/product/dto/update.product.dto';
+import { UpdateProductDto } from '../product/dto/update.product.dto';
 
 @Injectable()
 export class CartProductService {
@@ -64,19 +64,33 @@ export class CartProductService {
         })
     }
 
-    async update(cartId: number, updateProductDto: UpdateProductDto): Promise<CartProduct>{
-        const product = await this.verifyCartProduct(cartId, updateProductDto.id).catch(() => undefined);
+    /**
+     *  Updates the cart with the specified ID using the provided cart data transfer object.
+     *
+     * @param {number} cartId - The ID of the cart to update
+     * @param {CartDto} cartDto - The data transfer object containing the updated cart information
+     * @return {Promise<UpdateResult>} A promise that resolves to the update result
+     */
+    async update(cartId: number, cartDto: CartDto): Promise<UpdateResult>{
+        const product = await this.verifyCartProduct(cartId, cartDto.productId).catch(() => undefined);
         if(!product){
             throw new NotFoundException('Cart product not found');
         }
-        return await this.cartProductRepository.save({...updateProductDto, cartId});
+        return await this.cartProductRepository.update(product.id, cartDto);
     }
 
-    async delete(cartId : number, cartproductId: number): Promise<DeleteResult> {
-        const product = await this.verifyCartProduct(cartId, cartproductId).catch(() => undefined);
+    /**
+     * Asynchronously deletes a cart item.
+     *
+     * @param {number} cartId - The ID of the cart
+     * @param {CartDto} cartDto - The data transfer object for the cart
+     * @return {Promise<DeleteResult>} A promise that resolves to the delete result
+     */
+    async delete(cartId : number, cartDto: CartDto): Promise<DeleteResult> {
+        const product = await this.verifyCartProduct(cartId, cartDto.productId).catch(() => undefined);
         if(!product){
             throw new NotFoundException('Cart product not found');
         }
-        return await this.cartProductRepository.delete(cartproductId);
+        return await this.cartProductRepository.delete(product.id);
     }
 }
