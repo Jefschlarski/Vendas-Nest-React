@@ -15,7 +15,7 @@ export class OrderProduct{
     productId: number;
     
     @Column({name: 'amount', nullable: false})
-    type: number;
+    amount: number;
 
     @Column({name: 'price', nullable: false})
     price: number;

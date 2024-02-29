@@ -12,13 +12,13 @@ export abstract class Payment{
     @Column({name: 'status_id', nullable: false})
     statusId: number;
 
-    @Column({name: 'price', nullable: false})
+    @Column({name: 'price', type: 'decimal', precision: 10, scale: 2,  nullable: false})
     price: number;
 
-    @Column({name: 'discount', nullable: false})
+    @Column({name: 'discount',type: 'decimal', precision: 10, scale: 2,  nullable: false})
     discount: number;
 
-    @Column({name: 'final_price', nullable: false})
+    @Column({name: 'final_price', type: 'decimal', precision: 10, scale: 2,  nullable: false})
     finalPrice: number;
 
     @Column({name: 'type', nullable: false})

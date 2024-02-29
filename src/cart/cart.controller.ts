@@ -7,7 +7,7 @@ import { CartDto } from './dto/cart.dto';
 import { Cart } from './entities/cart.entity';
 import { ReturnCartDto } from './dto/return-cart.dto';
 import { DeleteResult, UpdateResult } from 'typeorm';
-import { UpdateProductDto } from 'src/product/dto/update.product.dto';
+
 @Roles(UserType.User)
 @Controller('cart')
 export class CartController {

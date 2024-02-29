@@ -20,4 +20,9 @@ export class Cart {
 
     @OneToMany(() => CartProduct, (cartProduct: CartProduct)=> cartProduct.cart)
     cartProducts?: CartProduct[]
+
+    getTotalPrice(): number {
+        return this.cartProducts.reduce((total, cartProduct) => total + cartProduct.product.price * cartProduct.amount, 0);
+    }
 }
+

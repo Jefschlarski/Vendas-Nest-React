@@ -17,7 +17,7 @@ export class Order{
     addressId: number;
     
     @Column({name: 'date', nullable: false})
-    type: Date;
+    date: Date;
 
     @Column({name: 'payment_id', nullable: false})
     paymentId: number;

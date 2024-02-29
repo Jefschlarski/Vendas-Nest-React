@@ -14,7 +14,7 @@ export class Product {
     @Column({name: 'category_id', nullable: false})
     categoryId: number;
 
-    @Column({name: 'price', nullable: false})
+    @Column({name: 'price', type: 'decimal', precision: 10, scale: 2,  nullable: false})
     price: number;
 
     @Column({name: 'image', nullable: false})
