@@ -36,7 +36,9 @@ export class ProductService {
      * @return {Promise<Product[]>} List of products
      */
     async findAll(): Promise<Product[]> {
-        const product = await this.productRepository.find();
+        const product = await this.productRepository.find(
+            {relations: ['category']}
+        );
         if(!product || product.length === 0) {
             throw new NotFoundException('Products empty');
         }
@@ -50,7 +52,7 @@ export class ProductService {
      * @return {Promise<Product>} The product found by the ID
      */
     async findById(id: number): Promise<Product> {
-        const product = await this.productRepository.findOne({where: {id}});
+        const product = await this.productRepository.findOne({where: {id}, relations: ['category']});
         if(!product) {
             throw new NotFoundException('Product not found');
         }
@@ -64,7 +66,7 @@ export class ProductService {
      * @return {Promise<Product>} the product found by name
      */    
     async findByName(name: string): Promise<Product> {
-        const product = await this.productRepository.findOne({where: {name}});
+        const product = await this.productRepository.findOne({where: {name}, relations: ['category']});
         if(!product) {
             throw new NotFoundException('Product not found');
         }

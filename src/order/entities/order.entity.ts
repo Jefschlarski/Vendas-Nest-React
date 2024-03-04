@@ -2,7 +2,7 @@ import { Address } from "../../address/entities/address.entity";
 import { OrderProduct } from "../../order-product/entities/order-product.entity";
 import { Payment } from "../../payment/entities/payment.entity";
 import { User } from "../../user/entities/user.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({name: 'order'})
 export class Order{
@@ -28,18 +28,22 @@ export class Order{
     @UpdateDateColumn({name: 'updated_at'})
     updatedAt:Date;
     
-    @ManyToMany(() => User, (user) => user.orders)
+    @ManyToOne(() => User, (user) => user.orders)
     @JoinColumn({name: 'user_id', referencedColumnName: 'id'})
     user?: User;
 
-    @ManyToMany(() => Address, (address) => address.orders)
+    @ManyToOne(() => Address, (address) => address.orders)
     @JoinColumn({name: 'address_id', referencedColumnName: 'id'})
     address?: Address;
 
-    @ManyToMany(() => Payment, (payment) => payment.orders)
+    @ManyToOne(() => Payment, (payment) => payment.orders)
     @JoinColumn({name: 'payment_id', referencedColumnName: 'id'})
     payment?: Payment;
 
     @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order)
-    orderProducts?: OrderProduct[]
+    orderProducts?: OrderProduct[];
+
+    getTotalPrice(): number {
+        return this.orderProducts.reduce((total, cartProduct) => total + cartProduct.product.price * cartProduct.amount, 0);
+    }
 }

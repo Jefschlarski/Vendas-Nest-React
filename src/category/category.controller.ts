@@ -1,12 +1,14 @@
-import { Body, Controller, Get, Param, Post, UsePipes, ValidationPipe} from '@nestjs/common';   
+import { Body, Controller, Get, Post, UsePipes, ValidationPipe} from '@nestjs/common';   
 import { CategoryService } from './category.service';
 import { Category } from './entities/category.entity';
 import { ReturnCategoryDto } from './dto/returnCategory.dto';
 import { Roles } from '../decorators/roles.decorator';
 import { UserType } from '../user/enum/user-type.enum';
+import { ReturnCategoryListDto } from './dto/returnCategoryList.dto';
 
 
 @Controller('category')
+@Roles(UserType.User, UserType.Admin)
 export class CategoryController {
 
     constructor(
@@ -19,9 +21,9 @@ export class CategoryController {
         return this.categoryService.create(category);
     }     
     @Get()
-    @Roles(UserType.User)
     @UsePipes(ValidationPipe)
-    async findAll(): Promise<ReturnCategoryDto[]> {
-        return (await this.categoryService.findAll()).map((category) => new ReturnCategoryDto(category));
+    async findAll(): Promise<ReturnCategoryListDto> {
+        const categories = await this.categoryService.findAll();
+        return new ReturnCategoryListDto(categories);
     }
 }

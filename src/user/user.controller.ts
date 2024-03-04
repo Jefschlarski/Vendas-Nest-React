@@ -5,6 +5,8 @@ import { ReturnUserDto } from './dto/return.user.dto';
 import { UpdatePasswordDto } from './dto/update.password';
 import { User } from './entities/user.entity';
 import { UserId } from '../decorators/user-id.decorator';
+import { Roles } from 'src/decorators/roles.decorator';
+import { UserType } from './enum/user-type.enum';
 
 @Controller('user')
 export class UserController {
@@ -30,6 +32,8 @@ export class UserController {
      * @return {Promise<ReturnUserDto[]>} Array of ReturnUserDto
      */
     @Get()
+    @UsePipes(ValidationPipe)
+    @Roles(UserType.Admin)
     async getAll(): Promise<ReturnUserDto[]> {
         return (await this.userService.findAll()).map((user) => new ReturnUserDto(user));
     }
