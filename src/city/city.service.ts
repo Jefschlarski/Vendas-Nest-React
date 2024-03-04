@@ -54,4 +54,18 @@ export class CityService {
 
         return city;
     }
+
+    /**
+     * Retrieves a city by its name.
+     *
+     * @param {string} name - the name of the city to retrieve
+     * @return {Promise<City>} the city object
+     */
+    async getByName(name: string, stateId: number): Promise<City>{
+        const city = await this.cityRepository.findOneBy({name, stateId});
+        if(!city){
+            throw new NotFoundException(`City Not Found`);
+        }
+        return city;
+    }
 }
