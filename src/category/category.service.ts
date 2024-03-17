@@ -42,7 +42,7 @@ export class CategoryService implements PersistenceContract<Category> {
     async findAll(): Promise<Category[]> {
         const categories = await this.categoryRepository.find({
             order: {
-                id: 'ASC', // 'ASC' para ascendente, 'DESC' para descendente
+                id: 'ASC',
             },
         });
         

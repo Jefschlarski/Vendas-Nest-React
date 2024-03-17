@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { CorreiosService } from './correios.service';
 import { CorreiosController } from './correios.controller';
 import { HttpModule } from '@nestjs/axios';
-import { CityModule } from 'src/city/city.module';
-import { StateModule } from 'src/state/state.module';
+import { CityModule } from '../city/city.module';
+import { StateModule } from '../state/state.module';
 
 @Module({
   imports: [HttpModule.register({

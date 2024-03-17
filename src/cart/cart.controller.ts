@@ -22,7 +22,6 @@ export class CartController {
     @Get()
     @UsePipes(ValidationPipe)
     async getCart(@UserId() userId: number): Promise<ReturnCartDto>{
-        
         return new ReturnCartDto(await this.cartService.findByUserId(userId, true));
     } 
 

@@ -3,10 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './entities/order.entity';
 import { Repository } from 'typeorm';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { PaymentService } from 'src/payment/payment.service';
-import { Payment } from 'src/payment/entities/payment.entity';
-import { CartService } from 'src/cart/cart.service';
-import { OrderProductService } from 'src/order-product/order-product.service';
+import { PaymentService } from '../payment/payment.service';
+import { Payment } from '../payment/entities/payment.entity';
+import { CartService } from '../cart/cart.service';
+import { OrderProductService } from '../order-product/order-product.service';
 
 @Injectable()
 export class OrderService {

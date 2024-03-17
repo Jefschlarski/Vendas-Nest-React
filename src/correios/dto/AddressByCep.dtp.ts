@@ -1,7 +1,7 @@
 
 import { IsInt, IsOptional, IsString } from "class-validator";
-import { ReturnCityDto } from "src/city/dto/returnCity.dto";
-import { ReturnStateDto } from "src/state/dto/returnState.dto";
+import { ReturnCityDto } from "../../city/dto/returnCity.dto";
+import { ReturnStateDto } from "../../state/dto/returnState.dto";
 
 export class AddressByCepDto{
     

@@ -19,6 +19,7 @@ import { PaymentModule } from './payment/payment.module';
 import { OrderModule } from './order/order.module';
 import { OrderProductModule } from './order-product/order-product.module';
 import { CorreiosModule } from './correios/correios.module';
+import { FavoriteProductModule } from './favorite-product/favorite-product.module';
 
 @Module({
   imports: 
@@ -55,6 +56,7 @@ import { CorreiosModule } from './correios/correios.module';
     OrderModule,
     OrderProductModule,
     CorreiosModule,
+    FavoriteProductModule,
   ],
   controllers: [],
   providers: [

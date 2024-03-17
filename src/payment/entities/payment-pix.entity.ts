@@ -1,6 +1,6 @@
 import { ChildEntity, Column} from "typeorm";
 import { Payment } from "./payment.entity";
-import { CreateOrderDto } from "src/order/dto/create-order.dto";
+import { CreateOrderDto } from "../../order/dto/create-order.dto";
 
 @ChildEntity()
 export class PixPayment extends Payment{

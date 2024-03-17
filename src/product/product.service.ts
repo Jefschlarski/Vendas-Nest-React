@@ -36,13 +36,14 @@ export class ProductService {
      * @return {Promise<Product[]>} List of products
      */
     async findAll(): Promise<Product[]> {
-        const product = await this.productRepository.find(
+        const products = await this.productRepository.find(
             {relations: ['category']}
         );
-        if(!product || product.length === 0) {
+
+        if(!products || products.length === 0) {
             throw new NotFoundException('Products empty');
         }
-        return product
+        return products
     }
 
     /**

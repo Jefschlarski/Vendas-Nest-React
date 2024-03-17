@@ -1,5 +1,5 @@
 import { Product } from "../entities/product.entity";
-import { ReturnCategoryDto } from "src/category/dto/returnCategory.dto";
+import { ReturnCategoryDto } from "../../category/dto/returnCategory.dto";
 
 export class ReturnProductDto{
     id: number;
@@ -7,6 +7,7 @@ export class ReturnProductDto{
     price: number;
     image: string;
     category: ReturnCategoryDto;
+    favorite?: boolean;
 
     constructor(product: Product){
         this.id = product.id;

@@ -6,11 +6,13 @@ import { Roles } from '../decorators/roles.decorator';
 import { ReturnProductDto } from './dto/return.product.dto';
 import { UserType } from '../user/enum/user-type.enum';
 import { UpdateProductDto } from './dto/update.product.dto';
+import { FavoriteProductService } from '../favorite-product/favorite-product.service';
+import { UserId } from '../decorators/user-id.decorator';
 
 @Controller('product')
 export class ProductController {
 
-    constructor(private readonly productService: ProductService){}
+    constructor(private readonly productService: ProductService, private readonly favoriteProductService: FavoriteProductService){}
 
     /**
      * Create a new product.
@@ -56,8 +58,21 @@ export class ProductController {
      */
     @Get()
     @Roles(UserType.Admin, UserType.User)
-    async findAll(): Promise<ReturnProductDto[]> {
-        return (await this.productService.findAll()).map((product) => new ReturnProductDto(product)); 
-    }  
+    async findAll(@UserId() userId: number): Promise<ReturnProductDto[]> {
+        const favoriteProducts = await this.favoriteProductService.findAllByUserId(userId).catch(() => undefined);
+        const products = (await this.productService.findAll()).map((product) => new ReturnProductDto(product))
+
+        if (favoriteProducts) {
+            favoriteProducts.forEach((favoriteProduct) => {
+                products.forEach((product) => {
+                    if (product.id === favoriteProduct.productId) {
+                        product.favorite = true;
+                    }
+                })
+            })
+            return products;
+        }
+        return products
+    }
     
 }

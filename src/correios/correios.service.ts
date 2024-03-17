@@ -1,10 +1,10 @@
 import { HttpService } from '@nestjs/axios';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { AddressByCepDto } from './dto/AddressByCep.dtp';
-import { CityService } from 'src/city/city.service';
-import { StateService } from 'src/state/state.service';
-import { ReturnCityDto } from 'src/city/dto/returnCity.dto';
-import { ReturnStateDto } from 'src/state/dto/returnState.dto';
+import { CityService } from '../city/city.service';
+import { StateService } from '../state/state.service';
+import { ReturnCityDto } from '../city/dto/returnCity.dto';
+import { ReturnStateDto } from '../state/dto/returnState.dto';
 
 
 @Injectable()

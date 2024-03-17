@@ -4,7 +4,6 @@ import { Cart } from './entities/cart.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CartDto } from './dto/cart.dto';
 import { CartProductService } from '../cart-product/cart-product.service';
-import { UpdateProductDto } from 'src/product/dto/update.product.dto';
 
 @Injectable()
 export class CartService {
@@ -49,11 +48,10 @@ export class CartService {
      * @return {Promise<Cart>} the updated cart after adding the product
      */   
     async addProductToCart(cartDto: CartDto, userId: number): Promise<Cart> {
-        
         const cart = await this.findByUserId(userId).catch(() => {
             return this.create(userId);
         })
-
+    
         await this.cartProductService.insert(cart, cartDto);
 
         return this.findByUserId(userId);
@@ -76,7 +74,7 @@ export class CartService {
      */
     async findByUserId(userId: number, hasRelations?: boolean): Promise<Cart> {
 
-        const relations = hasRelations ? {cartProducts: {product: true},} : undefined;
+        const relations = hasRelations ? {cartProducts: {product: {category: true}},} : undefined;
 
         const cart = await this.cartRepository.findOne({where: {userId, active: true}, relations});
 

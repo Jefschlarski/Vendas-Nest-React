@@ -1,7 +1,8 @@
 import { OrderProduct } from "../../order-product/entities/order-product.entity";
 import { CartProduct } from "../../cart-product/entities/cart-product.entity";
 import { Category } from "../../category/entities/category.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
+import { FavoriteProduct } from "../../favorite-product/entities/favorite-product.entity";
 
 @Entity({name: 'product'})
 export class Product {
@@ -31,8 +32,14 @@ export class Product {
     category?: Category;
 
     @OneToMany(() => CartProduct, (cartProduct: CartProduct)=> cartProduct.product)
+    @JoinColumn({name: 'id', referencedColumnName: 'productId'})
     cartProduct?: CartProduct[]
 
     @OneToMany(() => OrderProduct, (orderProduct: OrderProduct)=> orderProduct.product)
+    @JoinColumn({name: 'id', referencedColumnName: 'productId'})
     orderProducts?: OrderProduct[];
+
+    @ManyToOne(() => FavoriteProduct, (favoriteProduct: FavoriteProduct)=> favoriteProduct.product)
+    @JoinColumn({name: 'id', referencedColumnName: 'productId'})
+    favoriteProducts?: FavoriteProduct[];
 }

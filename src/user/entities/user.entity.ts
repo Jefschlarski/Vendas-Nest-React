@@ -1,6 +1,7 @@
 import { Order } from "../../order/entities/order.entity";
 import { Address } from "../../address/entities/address.entity";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { FavoriteProduct } from "../../favorite-product/entities/favorite-product.entity";
 
 @Entity({name: 'user'})
 export class User{
@@ -37,4 +38,7 @@ export class User{
 
     @OneToMany(() => Order, (order) => order.address)
     orders?:Order[];
+
+    @OneToMany(() => FavoriteProduct, (favoriteProduct) => favoriteProduct.user)
+    favoriteProducts?:FavoriteProduct[];
 }
