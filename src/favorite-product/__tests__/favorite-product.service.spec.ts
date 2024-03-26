@@ -29,6 +29,7 @@ describe('FavoriteProductService', () => {
           findOne: jest.fn().mockResolvedValue(null),
           save: jest.fn().mockResolvedValue(favoriteProductMock),
           delete: jest.fn().mockResolvedValue({affected: 1}),
+          update: jest.fn().mockResolvedValue({affected: 1}),
         },
       }],
     }).compile();
@@ -91,5 +92,17 @@ describe('FavoriteProductService', () => {
   it('should return NotFoundException in delete when FavoriteProduct not found', async () => {
     jest.spyOn(favoriteProductRepository, 'findOne').mockResolvedValue(null);
     expect(service.delete(1, 1)).rejects.toThrow(NotFoundException);
+  })
+
+  //TODO FEATURE DE STATUS NO FAVORITE PARA DAR UPDATE
+  it('should return UpdateResult in update', async () => {
+    jest.spyOn(favoriteProductRepository, 'findOne').mockResolvedValue(favoriteProductMock);
+    const updateResult = await service.update(1, favoriteProductMock.product.id);
+    expect(updateResult).toEqual({affected: 1});
+  })
+
+  it('shoul throw NotFoundException in update when FavoriteProduct not found', async () => {
+    jest.spyOn(service, 'findOneByUserIdAndProductId').mockResolvedValue(null);
+    expect(service.update(1, 1)).rejects.toThrow(NotFoundException);
   })
 });

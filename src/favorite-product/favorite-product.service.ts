@@ -1,8 +1,9 @@
 import { ConflictException, Inject, Injectable, NotFoundException, forwardRef } from '@nestjs/common';
 import { FavoriteProduct } from './entities/favorite-product.entity';
-import { DeleteResult, Repository } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductService } from '../product/product.service';
+import { FavoriteProductDto } from './dto/favorite-product.dto';
 
 @Injectable()
 export class FavoriteProductService {
@@ -93,5 +94,22 @@ export class FavoriteProductService {
         }
 
         return await this.favoriteProductRepository.delete(favoriteProduct.id);
+    }
+
+
+    //TODO FEATURE DE STATUS NO FAVORITE PARA DAR UPDATE
+    /**
+     * Update status of a favorite product.
+     *
+     * @param {number} userId - The ID of the user
+     * @param {number} productId - The ID of the product to be updated
+     * @return {Promise<UpdateResult>} 
+     */
+    async update(userId: number, productId: number): Promise<UpdateResult>{
+        const favoriteProduct = await this.findOneByUserIdAndProductId(userId, productId).catch(() => undefined);
+        if(!favoriteProduct){
+            throw new NotFoundException('Favorite product not found');
+        }
+        return await this.favoriteProductRepository.update(favoriteProduct.id, {});
     }
 }
