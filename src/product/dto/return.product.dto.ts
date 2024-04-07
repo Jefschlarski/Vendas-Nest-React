@@ -6,7 +6,7 @@ export class ReturnProductDto{
     name: string;
     price: number;
     image: string;
-    category: ReturnCategoryDto;
+    category?: ReturnCategoryDto;
     favorite?: boolean;
 
     constructor(product: Product){
@@ -14,6 +14,6 @@ export class ReturnProductDto{
         this.name = product.name;
         this.price = product.price;
         this.image = product.image;
-        this.category = new ReturnCategoryDto(product.category);
+        this.category = product.category ? new ReturnCategoryDto(product.category) : undefined;
     }
 }

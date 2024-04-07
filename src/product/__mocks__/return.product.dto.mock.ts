@@ -7,6 +7,7 @@ export const returnProductDtoMock: ReturnProductDto = {
     image: 'image.png',
     category: {
         id: 1,
-        name: 'Category 1'
+        name: 'Category 1',
+        categoryColor: '#FFFFFF'
     }
 }
