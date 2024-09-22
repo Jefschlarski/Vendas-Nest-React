@@ -8,6 +8,7 @@ import { UserType } from '../user/enum/user-type.enum';
 import { UpdateProductDto } from './dto/update.product.dto';
 import { FavoriteProductService } from '../favorite-product/favorite-product.service';
 import { UserId } from '../decorators/user-id.decorator';
+import { CreateProductDto } from './dto/create.product.dto';
 
 @Controller('product')
 export class ProductController {
@@ -22,8 +23,8 @@ export class ProductController {
      */
     @Post()
     @Roles(UserType.Admin)
-    async create(@Body() product: Product): Promise<ReturnProductDto> {
-        return new ReturnProductDto(await this.productService.create(product));
+    async create(@Body() product: CreateProductDto): Promise<ReturnProductDto> {
+        return await this.productService.create(product);
     }
     
     /**

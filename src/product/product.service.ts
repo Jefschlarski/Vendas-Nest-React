@@ -4,6 +4,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { CategoryService } from '../category/category.service';
 import { UpdateProductDto } from './dto/update.product.dto';
+import { CreateProductDto } from './dto/create.product.dto';
+import { ReturnProductDto } from './dto/return.product.dto';
 
 @Injectable()
 export class ProductService {
@@ -19,7 +21,7 @@ export class ProductService {
      * @param {Product} createProductDto - the product to be created
      * @return {Promise<Product>} the newly created product
      */
-    async create(createProductDto: Product): Promise<Product> {
+    async create(createProductDto: CreateProductDto): Promise<ReturnProductDto> {
         await this.categoryService.findById(createProductDto.categoryId);
         const product = await this.findByName(createProductDto.name).catch(() => undefined);
 
@@ -27,7 +29,7 @@ export class ProductService {
             throw new ConflictException('Product already exists');
         }
 
-        return await this.productRepository.save(createProductDto);
+        return new ReturnProductDto(await this.productRepository.save(createProductDto));
     }
 
     /**

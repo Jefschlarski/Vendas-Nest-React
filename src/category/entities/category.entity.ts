@@ -8,10 +8,13 @@ export class Category {
     
     @Column({name: 'name', nullable: false})
     name: string
-     
+    
+    @Column({name: 'category_color', nullable: false})
+    categoryColor: string
+    
     @CreateDateColumn({name: 'created_at'})    
     createdAt: Date
-
+    
     @UpdateDateColumn({name: 'updated_at'})
     updatedAt: Date
 
