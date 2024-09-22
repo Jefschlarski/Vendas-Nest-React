@@ -1,13 +1,14 @@
-import { Body, Controller, Get, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { UserDto } from './dto/user.dto';
 import { UserService } from './user.service';
 import { ReturnUserDto } from './dto/return.user.dto';
 import { UpdatePasswordDto } from './dto/update.password';
 import { User } from './entities/user.entity';
 import { UserId } from '../decorators/user-id.decorator';
-import { Roles } from '../decorators/roles.decorator';
-import { UserType } from './enum/user-type.enum';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from 'src/guards/auth.guard';
 
+@ApiTags('user')
 @Controller('user')
 export class UserController {
 
@@ -21,21 +22,23 @@ export class UserController {
      */
     @UsePipes(ValidationPipe)
     @Post()
+    @ApiOperation({summary: 'Create a new user'})
     async create (@Body() user: UserDto): Promise<ReturnUserDto>
     {
         return this.userService.create(user);
     }
 
     /**
-     * Retrieves all users and returns them as ReturnUserDto array.
+     * Retrieves a user by their a token ID.
      *
      * @return {Promise<ReturnUserDto[]>} Array of ReturnUserDto
      */
     @Get()
     @UsePipes(ValidationPipe)
-    @Roles(UserType.Admin)
-    async getAll(): Promise<ReturnUserDto[]> {
-        return (await this.userService.findAll()).map((user) => new ReturnUserDto(user));
+    @ApiBearerAuth()
+    @ApiOperation({summary: 'Get user by token ID'})
+    async getByTokenId(@UserId() userId: number): Promise<ReturnUserDto> {
+        return new ReturnUserDto(await this.userService.findById(userId));
     }
 
     /**
@@ -45,6 +48,9 @@ export class UserController {
      * @return {Promise<ReturnUserDto>} a promise that resolves to a ReturnUserDto
      */
     @Get('/:userId')
+    @UseGuards(AuthGuard)
+    @ApiBearerAuth()
+    @ApiOperation({summary: 'Get user relations by user ID', parameters: [{name: 'userId', in: 'query', description: 'User ID'}]})
     async getUserRelations(@Param('userId') userId: number): Promise<ReturnUserDto>{
         return new ReturnUserDto(await this.userService.getUserRelations(userId));
     }
@@ -57,7 +63,10 @@ export class UserController {
      * @return {Promise<User>} description of return value
      */
     @Patch()
+    @UseGuards(AuthGuard)
     @UsePipes(ValidationPipe)
+    @ApiBearerAuth()
+    @ApiOperation({summary: 'Update user password', parameters: [{name: 'userId', in: 'query', description: 'User ID'}]})
     async updatePassword(@UserId() userId: number, @Body() updatePasswordDto: UpdatePasswordDto): Promise<User>{
         return await this.userService.updatePassword(userId, updatePasswordDto);
     }

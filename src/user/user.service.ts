@@ -58,6 +58,10 @@ export class UserService implements PersistenceContract<User> {
      * @return {Promise<User>} The user with relations
      */
     async getUserRelations(userId: number): Promise<User>{
+        let user = await this.findById(userId)
+        if (!user) {
+            throw new NotFoundException(`User Not Found`);
+        }
         return this.userRepository.findOne({
             where:{
                 id:userId

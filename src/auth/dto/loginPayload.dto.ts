@@ -1,11 +1,15 @@
-import { User } from "../../user/entities/user.entity";
+import { User } from "src/user/entities/user.entity";
 
-export class LoginPayloadDto{
-    id: number;
+export class LoginPayload{
+    id: string;
+    name: string;
+    email: string;
     typeUser: number;
 
     constructor(user: User){
-        this.id = user.id;
-        this.typeUser = user.typeUser;
+        this.id = user.id.toString();
+        this.name = user.name;
+        this.email = user.email;
+        this.typeUser = user.typeUser
     }
 }

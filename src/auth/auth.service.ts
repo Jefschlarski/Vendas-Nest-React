@@ -1,41 +1,30 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { LoginDto } from './dto/login.dto';
-import { User } from '../user/entities/user.entity';
-import { UserService } from '../user/user.service';
-import { ReturnUserDto } from '../user/dto/return.user.dto';
+
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { LoginPayloadDto } from './dto/loginPayload.dto';
+import { UserService } from 'src/user/user.service';
+import { validatePassword } from './utils/validate-password';
 import { ReturnLoginDto } from './dto/returnLogin.dto';
-import { validatePassword } from '../utils/autenticate';
+import { LoginPayload } from './dto/loginPayload.dto';
 
 @Injectable()
 export class AuthService {
-    
-    constructor(
-        private readonly userService: UserService,
-        private jwtService: JwtService,
-    ){}
-    
-    /**
-     * Asynchronously logs in a user.
-     *
-     * @param {LoginDto} loginDto - the login data transfer object
-     * @return {Promise<ReturnLoginDto>} returns a promise with the returned login data transfer object
-     */
-    async login(loginDto: LoginDto): Promise<ReturnLoginDto>{
+  constructor(
+    private usersService: UserService,
+    private jwtService: JwtService
+  ) {}
 
-        const user: User | undefined = await this.userService.findByEmail(loginDto.email).catch(()=> undefined);
-
-        if(!user){
-            throw new NotFoundException('Email or password invalid');
-        }
-
-        const isMatch = await validatePassword(loginDto.password, user.password || '');
-
-        if(!isMatch){
-            throw new NotFoundException('Email or password invalid');
-        }
-
-        return {accessToken: this.jwtService.sign({...new LoginPayloadDto(user)}), user: new ReturnUserDto(user)}
+  async signIn(
+    email: string,
+    pass: string,
+  ): Promise<ReturnLoginDto> {
+    const user = await this.usersService.findByEmail(email);
+    if (!user) {
+      throw new NotFoundException('Wrong credentials');
     }
+    const isMatch = await validatePassword(pass, user.password || '');
+    if (!isMatch) {
+      throw new UnauthorizedException('Wrong credentials');
+    }
+    return {accessToken: this.jwtService.sign({...new LoginPayload(user)})}
+  }
 }

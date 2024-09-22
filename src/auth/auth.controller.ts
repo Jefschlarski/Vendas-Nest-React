@@ -1,24 +1,25 @@
-import { Body, Controller, Post, UsePipes, ValidationPipe } from '@nestjs/common';
-import { LoginDto } from './dto/login.dto';
-import { AuthService } from './auth.service';
-import { ReturnLoginDto } from './dto/returnLogin.dto';
 
+import { Body, Controller,   Request, Post, HttpCode, HttpStatus, Get, UseGuards } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { LoginDto } from './dto/login.dto';
+
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-    
-    constructor(
-        private readonly authService: AuthService
-    ){}
-    
-    /**
-     * Perform a login using the provided login data.
-     *
-     * @param {LoginDto} loginDto - the login data
-     * @return {Promise<ReturnLoginDto>} the login result
-     */
-    @UsePipes(ValidationPipe)
-    @Post()
-    async login(@Body() loginDto: LoginDto): Promise<ReturnLoginDto>{
-        return await this.authService.login(loginDto);
-    }
+  constructor(private authService: AuthService) {}
+
+  @HttpCode(HttpStatus.OK)
+  @Post('login')
+  @ApiOperation({ summary: 'Login do usuário' })
+  signIn(@Body() signInDto: LoginDto) {
+    return this.authService.signIn(signInDto.email, signInDto.password);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
+  }
 }

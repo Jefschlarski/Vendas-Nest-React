@@ -6,14 +6,15 @@ export class ReturnProductDto{
     name: string;
     price: number;
     image: string;
-    category: ReturnCategoryDto;
+    category?: ReturnCategoryDto;
     favorite?: boolean;
 
     constructor(product: Product){
+        console.log(product.category)
         this.id = product.id;
         this.name = product.name;
         this.price = product.price;
         this.image = product.image;
-        this.category = new ReturnCategoryDto(product.category);
-    }
+        this.category = product.category ? new ReturnCategoryDto(product.category): null;
+    } 
 }
